@@ -14,21 +14,21 @@ func main() {
 	randomizer := func(limit int) int {
 		return rand.Intn(limit)
 	}
-	player := montecarlo.CreatePlayer(montecarlo.FairRoulette, randomizer)
+	player := montecarlo.CreatePlayer(montecarlo.FairRoulette(randomizer))
 	fmt.Println("Fair roulette")
 	simulation(player, 100)
 	simulation(player, 10_000)
 	simulation(player, 1_000_000)
 	simulation(player, 100_000_000)
 
-	player = montecarlo.CreatePlayer(montecarlo.EuropeanRoulette, randomizer)
+	player = montecarlo.CreatePlayer(montecarlo.EuropeanRoulette(randomizer))
 	fmt.Println("European roulette")
 	simulation(player, 100)
 	simulation(player, 10_000)
 	simulation(player, 1_000_000)
 	simulation(player, 100_000_000)
 
-	player = montecarlo.CreatePlayer(montecarlo.AmericanRoulette, randomizer)
+	player = montecarlo.CreatePlayer(montecarlo.AmericanRoulette(randomizer))
 	fmt.Println("American roulette")
 	simulation(player, 100)
 	simulation(player, 10_000)
@@ -47,5 +47,4 @@ func simulation(player *montecarlo.Player, spins int) {
 	fmt.Println()
 
 	fmt.Printf("Confidence interval 95%%: [%f, %f] \n", result.Confidence95.Min, result.Confidence95.Max)
-
 }

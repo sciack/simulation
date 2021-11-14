@@ -9,20 +9,34 @@ const (
 
 type Randomizer func(int) int
 
-func FairRoulette(bet Bet, rnd Randomizer) int {
-	return spin(bet, FAIR, rnd)
+type Roulette struct {
+	pockets int
+	rnd     Randomizer
 }
 
-func EuropeanRoulette(bet Bet, rnd Randomizer) int {
-	return spin(bet, EUROPEAN, rnd)
+func FairRoulette(rnd Randomizer) *Roulette {
+	return &Roulette{
+		pockets: FAIR,
+		rnd:     rnd,
+	}
 }
 
-func AmericanRoulette(bet Bet, rnd Randomizer) int {
-	return spin(bet, AMERICAN, rnd)
+func EuropeanRoulette(rnd Randomizer) *Roulette {
+	return &Roulette{
+		pockets: EUROPEAN,
+		rnd:     rnd,
+	}
 }
 
-func spin(bet Bet, roulette int, rnd Randomizer) int {
-	res := rnd(roulette) + 1
+func AmericanRoulette(rnd Randomizer) *Roulette {
+	return &Roulette{
+		pockets: AMERICAN,
+		rnd:     rnd,
+	}
+}
+
+func (r *Roulette) spin(bet Bet) int {
+	res := r.rnd(r.pockets) + 1
 	if res == bet.Value {
 		return bet.Amount * WIN
 	} else {
